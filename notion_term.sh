@@ -37,9 +37,24 @@ case "$db_selection" in
     python3 ~/notion-client/query_football.py --team "$team_flag"
     ;;
 
-  "📚 Assignments")
-    python3 ~/notion-client/query_assignments.py
+    "📚 Assignments")
+    # Define list of classes (can make this dynamic later)
+    class_options=("All" "Cloud Computing & Security" "Advanced Computer Architecture" "Game Design" "Computing Beyond CPUs")
+
+    class_selection=$(printf "%s\n" "${class_options[@]}" | fzf --prompt="Select class (or All): ")
+
+    if [[ -z "$class_selection" ]]; then
+      echo "❌ No class selected. Exiting."
+      exit 1
+    fi
+
+    if [[ "$class_selection" == "All" ]]; then
+      python3 ~/notion-client/query_assignments.py
+    else
+      python3 ~/notion-client/query_assignments.py --class "$class_selection"
+    fi
     ;;
+
 
   *)
     echo "❌ Invalid selection. Exiting."

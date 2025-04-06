@@ -6,6 +6,7 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="Query Notion school assignments.")
+    parser.add_argument("--class", dest="class_filter", help="Filter by class (Project name)")
     # In the future, you could add more flags here like:
     # parser.add_argument("--flat", action="store_true", help="Show flat table instead of grouped")
     args = parser.parse_args()
@@ -51,7 +52,23 @@ def main():
         })
 
     add_status_to_assignments(assignments, raw_results)
-    group_assignments_by_class(assignments)
+    
+    if args.class_filter:
+        # Filter by class name (case-insensitive match)
+        class_name = args.class_filter.lower()
+        filtered = [a for a in assignments if a["project"].lower() == class_name]
+
+        if not filtered:
+            print(f"❌ No assignments found for class '{args.class_filter}'.")
+            return
+
+        from tabulate import tabulate
+        print(f"📚 {args.class_filter}\n")
+        table_data = [(a['name'], a['due'], a['status_str']) for a in filtered]
+        headers = ["Name", "Due Date", "Status"]
+        print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
+    else:
+        group_assignments_by_class(assignments)
 
 if __name__ == "__main__":
     main()
