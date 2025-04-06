@@ -17,12 +17,17 @@ def main():
     today = datetime.today().strftime("%Y-%m-%d")
 
     print(f"\n📅 Upcoming Matches (from {today}):\n")
+    if team_name:
+        print(f"🔍 Filter: {team_name}\n")
+
 
     matches = fetch_upcoming_matches(team_name=team_name)
-    # for match in matches:
-    #     print(f"⚽ {match['name']}")
-    #     print(f"   🏆 {match['league']}")
-    #     print(f"   🕒 {match['date']}\n")
+    
+    if not matches:
+        print("❌ No upcoming matches found.")
+        return
+
+    
     table_data = [(m['name'], m['league'], m['date']) for m in matches]
     headers = ["Match", "League", "Date"]
     print(tabulate(table_data, headers=headers, tablefmt="fancy_grid"))
