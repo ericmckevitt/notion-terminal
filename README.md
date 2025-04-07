@@ -26,4 +26,8 @@ The structure, filters, and queries are built specifically for my Notion setup. 
 
 ### 🎞️ Demo
 
-![CLI Demo](docs/week_demo.gif)
+Below is a demonstration of the program querying Notion for all assignments due in the current week. 
+![Assignments Demo](docs/week_demo.gif)
+
+This second demo is the program querying Notion for football matches filtered by team.
+![Football Demo](docs/football_demo.gif)
