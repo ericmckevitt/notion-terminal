@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "$HOME/notion-client/venv/bin/activate"
+
 # Step 1: Select the Notion database
 options=(
   "🏟️  Football"
@@ -37,11 +39,10 @@ case "$db_selection" in
     python3 ~/notion-client/query_football.py --team "$team_flag"
     ;;
 
-    "📚 Assignments")
-    # Define list of classes (can make this dynamic later)
-    class_options=("All" "Cloud Computing & Security" "Advanced Computer Architecture" "Game Design" "Computing Beyond CPUs")
+  "📚 Assignments")
+    class_options=("All" "Cloud Computing & Security" "Advanced Computer Architecture" "Game Design" "Computing Beyond CPUs" "Week")
 
-    class_selection=$(printf "%s\n" "${class_options[@]}" | fzf --prompt="Select class (or All): ")
+    class_selection=$(printf "%s\n" "${class_options[@]}" | fzf --prompt="Select class (or All/Week): ")
 
     if [[ -z "$class_selection" ]]; then
       echo "❌ No class selected. Exiting."
@@ -50,14 +51,10 @@ case "$db_selection" in
 
     if [[ "$class_selection" == "All" ]]; then
       python3 ~/notion-client/query_assignments.py
+    elif [[ "$class_selection" == "Week" ]]; then
+      python3 ~/notion-client/query_assignments.py --week
     else
       python3 ~/notion-client/query_assignments.py --class "$class_selection"
     fi
-    ;;
-
-
-  *)
-    echo "❌ Invalid selection. Exiting."
-    exit 1
     ;;
 esac

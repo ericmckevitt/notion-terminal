@@ -1,5 +1,5 @@
 import argparse
-from datetime import datetime
+from datetime import datetime, timedelta
 from notion_assignments import fetch_this_weeks_assignments, add_status_to_assignments, group_assignments_by_class
 from notion_client import Client
 import os
@@ -7,27 +7,44 @@ import os
 def main():
     parser = argparse.ArgumentParser(description="Query Notion school assignments.")
     parser.add_argument("--class", dest="class_filter", help="Filter by class (Project name)")
-    # In the future, you could add more flags here like:
-    # parser.add_argument("--flat", action="store_true", help="Show flat table instead of grouped")
+    parser.add_argument("--week", action="store_true", help="Only show assignments due this week")
     args = parser.parse_args()
 
-    today = datetime.today().strftime("%Y-%m-%d")
-    print(f"\n📅 Assignments Due (from {today}):\n")
+    today = datetime.today()
+    print_str = f"\n📅 Assignments Due"
+    if args.week:
+        print_str += " This Week"
+    else:
+        print_str += f" (from {today.strftime('%Y-%m-%d')})"
+    print(print_str + ":\n")
 
     # Initialize Notion client manually to access raw results (for status)
     notion = Client(auth=os.environ["NOTION_API_TOKEN"])
     database_id = "a54c41eb884442f18cc221c0febbeee0"
 
-    filters = {
-        "and": [
-            {"property": "Area", "select": {"equals": "School"}},
-            {"property": "Due Date", "date": {"on_or_after": today}}
-        ]
-    }
+    # Construct filters
+    filters = [
+        {"property": "Area", "select": {"equals": "School"}}
+    ]
+
+    if args.week:
+        filters.append({
+            "property": "Due Date",
+            "date": {
+                "this_week": {}
+            }
+        })
+    else:
+        filters.append({
+            "property": "Due Date",
+            "date": {
+                "on_or_after": today.strftime("%Y-%m-%d")
+            }
+        })
 
     response = notion.databases.query(
         database_id=database_id,
-        filter=filters,
+        filter={"and": filters},
         sorts=[{"property": "Due Date", "direction": "ascending"}]
     )
 
@@ -70,5 +87,7 @@ def main():
     else:
         group_assignments_by_class(assignments)
 
+
 if __name__ == "__main__":
     main()
+
