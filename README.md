@@ -14,6 +14,16 @@ This suite includes scripts that:
 - **Terminal-Friendly Display:** Data is presented in the terminal using `tabulate` for clear and organized output.
 - **Status Highlighting:** Assignment statuses are color-coded for quick identification.
 
+### 🎞️ Demo
+
+See two demos, with the terminal application on the left pane and the corresponding Notion database on the right pane. 
+
+This is a demonstration of the program querying Notion for all assignments due in the current week. 
+![Assignments Demo](docs/week_demo.gif)
+
+This second demo is the program querying Notion for football matches filtered by team.
+![Football Demo](docs/football_demo.gif)
+
 ## 🚧 Not a Plug-and-Play Tool
 
 This project is intended as a **personal CLI interface** for querying my own Notion databases — including upcoming football matches and school assignments.
@@ -23,11 +33,3 @@ The structure, filters, and queries are built specifically for my Notion setup. 
 - Replace the Notion database IDs with your own
 - Customize filters based on your schema
 - Modify or extend the FZF menu for your use cases
-
-### 🎞️ Demo
-
-Below is a demonstration of the program querying Notion for all assignments due in the current week. 
-![Assignments Demo](docs/week_demo.gif)
-
-This second demo is the program querying Notion for football matches filtered by team.
-![Football Demo](docs/football_demo.gif)
