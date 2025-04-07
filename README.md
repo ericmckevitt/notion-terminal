@@ -23,3 +23,7 @@ The structure, filters, and queries are built specifically for my Notion setup. 
 - Replace the Notion database IDs with your own
 - Customize filters based on your schema
 - Modify or extend the FZF menu for your use cases
+
+### 🎞️ Demo
+
+![CLI Demo](docs/week_demo.gif)

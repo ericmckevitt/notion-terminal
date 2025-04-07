@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "$HOME/notion-client/venv/bin/activate"
+# source "$HOME/notion-client/venv/bin/activate"
 
 # Step 1: Select the Notion database
 options=(
